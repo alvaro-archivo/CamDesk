@@ -1,0 +1,37 @@
+Hello everyone MICHAEL here, and thanks for downloading the alpha for CamDesk for Linux. Let me just say that there's no need for compiling.
+
+CamDesk for Linux was coded in Python using PyGTK, and has only been tested on Linux Ubuntu 11.04 i386.
+
+Now if you're having any problems running CamDesk for Linux make sure you have V4L (Video4Linux), GStreamer, and Python installed. As well as the following dependencies...
+libgtk2.0-dev
+libgtk2.0-doc
+libglib2.0-doc
+
+If you experience some problems testing CamDesk (black screen, first run successful and following run leading to black screen, …) check if your webcam is UVC (USB Video Class) Linux compliant. To do that, type in the terminal "lsusb".
+
+Now head to http://www.ideasonboard.org/uvc/#devices and check to see if your webcam is compatible. My USB camera is a Microsoft LifeCam VX-300 and is not compatible. I don't recall the number off hand, but my buddy's Microsoft LifeCam VX-500 (045e:074a) worked fine and is well supported. If you're webcam is not supported I suggest just getting a new one that is supported.
+
+Now in order to use CamDesk for Linux you gotta know the hotkeys.
+Start Webcam = F1
+Stop Webcam = F2
+Launch CamDesk Properties = F5
+Close CamDesk = Escape or Alt+F4
+
+NOTE: Before you ever close CamDesk make sure to stop the webcam from running.
+
+The reason you do this is, because it's a bad drawable, and lets just say it causes problems.
+
+You'll most likely end up getting this error next time you launch the app via terminal.
+
+python: ../../src/xcb_io.c:221: poll_for_event: Assertion `(((long) (event_sequence) - (long) (dpy->request)) <= 0)' failed.
+Aborted
+
+So make sure to stop the webcam it before you close it, and if you did decide to close CamDesk before stopping it. Just wait about two minutes, and launch it again when needed.
+
+If you didn't get the error, but it launches, and gets aborted where you don't see CamDesk. Then wait a couple minutes, and launch it again.
+
+Now there's no built in option on moving CamDesk, cause every Linux distro I've tried had a built in option of this available in the OS. Like on Ubuntu, and Kubuntu it's Alt+Left Click and drag. Unless you've changed the hotkey. So if you wanna move CamDesk. That's how you do it.
+
+Additionally the Properties Dialog Box will enable you to change dimensions, opacity, and set CamDesk to display above all other windows (aka pinning) which is set by default, or have it unpinned.
+
+If you have any questions or concerns about CamDesk feel free to contact me, or any of the other developers on our Facebook Fanpage - https://www.facebook.com/pages/CamDesk/363216231833
