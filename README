@@ -2,7 +2,7 @@ Hello everyone MICHAEL here, and thanks for downloading the alpha for CamDesk fo
 
 CamDesk for Linux was coded in Python using PyGTK, and has only been tested on Linux Ubuntu 11.04 i386.
 
-Now if you're having any problems running CamDesk for Linux make sure you have V4L (Video4Linux), GStreamer, and Python installed. As well as the following dependencies...
+Now if you're having any problems running CamDesk for Linux make sure you have V4L (Video4Linux), GStreamer, and Python installed. You must have argparse module installed as well as the following dependencies...
 libgtk2.0-dev
 libgtk2.0-doc
 libglib2.0-doc
@@ -16,6 +16,20 @@ Start Webcam = F1
 Stop Webcam = F2
 Launch CamDesk Properties = F5
 Close CamDesk = Escape or Alt+F4
+
+Camdesk admits the following command line parameters:
+-t/--top: start position from the top of the screen
+-l/--left: start position from the left of the screen
+-h/--height: initial height
+-w/--width: initial width
+-d/--device: webcam device
+
+For example, this commad would open camdesk at 100px from the left of the screen, 50px from the top, in a window 200px height and 400px width using a second videocamera:
+camdesk.py -t 50 -l 100 -h 200 -w 400 -d /dev/video1
+
+This would be equivalent:
+camdesk.py --top 50 --left 100 -h 200 -w 400 -d /dev/video1
+
 
 NOTE: Before you ever close CamDesk make sure to stop the webcam from running.
 

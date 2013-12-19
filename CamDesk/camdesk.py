@@ -4,7 +4,6 @@ import sys, os
 import pygtk, gtk, gobject
 import pygst
 pygst.require("0.10")
-import gst
 
 class CamDesk(gtk.Window):
 	
@@ -86,14 +85,14 @@ class CamDesk(gtk.Window):
    def closeproperties(self, w):
 	 self.win.hide()
 
-   def __init__(self):
+   def __init__(self,left,top,width,height,device):
 	super(CamDesk, self).__init__()
 	
 	self.set_position(gtk.WIN_POS_CENTER)
 	self.set_title("CamDesk")
 	self.set_decorated(False)
 	self.set_has_frame(False)
-	self.set_size_request(320, 240)
+	self.set_size_request(width, height)
 	self.set_resizable(False)
 	self.set_keep_above(True)
 	self.set_property('skip-taskbar-hint', True)
@@ -112,13 +111,20 @@ class CamDesk(gtk.Window):
 	self.show_all()
 
 	# Set up the gstreamer pipeline
-	self.player = gst.parse_launch ("v4l2src ! autovideosink")
+	self.player = gst.parse_launch ('v4l2src '+('' if device=='' else 'device='+device)+' ! autovideosink')
 
 	bus = self.player.get_bus()
 	bus.add_signal_watch()
 	bus.enable_sync_message_emission()
 	bus.connect("message", self.on_message)
 	bus.connect("sync-message::element", self.on_sync_message)
+
+	# Start with camera playing
+	self.player.set_state(gst.STATE_PLAYING)
+	
+	# Set initial position
+	self.move(left,top)
+
 
    def on_message(self, bus, message):
       t = message.type
@@ -141,6 +147,43 @@ class CamDesk(gtk.Window):
 	imagesink.set_property("force-aspect-ratio", True)
 	imagesink.set_xwindow_id(self.movie_window.window.xid)
 	
-CamDesk()
+# Parameters management
+import argparse
+
+parser = argparse.ArgumentParser(
+					add_help=False,
+					description='Shows a window which displays webcam images'
+					)
+parser.add_argument('-t','--top',
+					help='Initial top position of the window',
+					type=int,
+					default=0
+					)
+parser.add_argument('-l','--left',
+					help='Initial left position of the window',
+					type=int,
+					default=0
+					)
+parser.add_argument('-h','--height',
+					help='Initial height of the window',
+					type=int,
+					default=120
+					)
+parser.add_argument('-w','--width',
+					help='Initial width of the window',
+					type=int,
+					default=213
+					)
+parser.add_argument('-d','--device',
+					help='Webcam device. Usefull if you have more than one webcam (usually /dev/videoN)',
+					default=''
+					)
+args = parser.parse_args()
+
+# This is required here to avoid gstreamer processing parameters
+sys.argv[:]=[]
+import gst
+
+CamDesk(args.left,args.top,args.width,args.height,args.device)
 gtk.gdk.threads_init()
 gtk.main()
